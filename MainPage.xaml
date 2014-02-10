@@ -8,6 +8,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button Content="Charge" HorizontalAlignment="Stretch" Margin="50,50,50,50" VerticalAlignment="Stretch" FontSize="72" Click="ChargeButton_Click"/>
 
     </Grid>
 </Page>

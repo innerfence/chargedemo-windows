@@ -26,5 +26,10 @@ namespace ChargeDemo
         {
             this.InitializeComponent();
         }
+
+        private void ChargeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
