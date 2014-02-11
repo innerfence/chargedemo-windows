@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.System;
 
 namespace InnerFence.ChargeAPI
 {
     public class ChargeRequest
     {
         public const string CCTERMINAL_BASE_URL = @"com-innerfence-ccterminal://charge/1.0.0/";
-
-        public class ApplicationNotInstalled : Exception { }
 
         public static class Keys
         {
@@ -106,7 +103,7 @@ namespace InnerFence.ChargeAPI
             return parameters;
         }
 
-        public async void Submit()
+        public Uri GenerateLaunchURL()
         {
             string uriToLaunch = CCTERMINAL_BASE_URL + "?";
 
@@ -125,14 +122,9 @@ namespace InnerFence.ChargeAPI
                 }
             }
 
-            // Launch the URI
-            var uri = new Uri(uriToLaunch.TrimEnd('&'));
-            var success = await Launcher.LaunchUriAsync(uri);
 
-            if (!success)
-            {
-                throw new ApplicationNotInstalled();
-            }
+            // Launch the URI
+            return new Uri(uriToLaunch.TrimEnd('&'));
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,7 +30,7 @@ namespace InnerFence.ChargeDemo
             this.InitializeComponent();
         }
 
-        private void ChargeButton_Click(object sender, RoutedEventArgs e)
+        private async void ChargeButton_Click(object sender, RoutedEventArgs e)
         {
             // Create the ChargeRequest using the default constructor
             ChargeRequest chargeRequest = new ChargeRequest();
@@ -83,7 +84,15 @@ namespace InnerFence.ChargeDemo
             chargeRequest.Zip = "98021";
 
             // Submit request
-            chargeRequest.Submit();
+            Uri launchURL = chargeRequest.GenerateLaunchURL();
+            var success = await Launcher.LaunchUriAsync(launchURL);
+
+            if (!success)
+            {
+                // Handle the case when Credit Card Terminal isn't installed
+                var messageDialog = new MessageDialog("Could not launch Credit Card Terminal. Please ensure it has been installed.");
+                await messageDialog.ShowAsync();
+            }
         }
 
         private async void HandleResponse()
