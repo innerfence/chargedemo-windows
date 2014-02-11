@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InnerFence.ChargeAPI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace ChargeDemo
+namespace InnerFence.ChargeDemo
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -28,11 +29,19 @@ namespace ChargeDemo
             this.InitializeComponent();
         }
 
-        private async void ChargeButton_Click(object sender, RoutedEventArgs e)
+        private void ChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            var messageDialog = new MessageDialog( "Charge failed." );
+            // TODO: generate test request
+            ChargeRequest req = new ChargeRequest();
 
+            // Submit request
+            req.Submit();
+        }
+
+        private async void HandleResponse()
+        {
             // Show the message dialog
+            var messageDialog = new MessageDialog("Charge failed.");
             await messageDialog.ShowAsync();
         }
     }
