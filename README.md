@@ -32,10 +32,11 @@ INTEGRATION CHECKLIST
     (e.g. `com-innerfence-chargedemo`)
 
 * Request payment by creating an ChargeRequest object, setting its
-  properties, and calling its `GenerateLaunchURL()` method. Be sure to
-  set the returnURL property. Consider using `SetReturnURL( returnUrl,
-  extraParams )` to automatically include extra parameters in the
-  query string. For example:
+  properties, calling its `GenerateLaunchURL()` method, and launching
+  the returned URL. Be sure to set the returnURL property if you want
+  us to return the results to your app. Consider using `SetReturnURL(
+  returnUrl, extraParams )` to automatically include extra parameters
+  in the query string. For example:
 
 ```cs
 ChargeRequest chargeRequest = new ChargeRequest();
@@ -60,8 +61,8 @@ var success = await Launcher.LaunchUriAsync(launchURL);
 ```
 
 * Handle charge responses in your app’s
-  OnActivated(IActivatedEventArgs args) method by creating an
-  ChargeResponse object passing the protocol Uri.. Use the
+  `OnActivated(IActivatedEventArgs args)` method by creating an
+  ChargeResponse object by passing the protocol Uri. Use the
   `ResponseCode` property to determine if the transaction was
   successful. For example:
 
@@ -112,7 +113,7 @@ PROTOCOL REQUEST
 ================
 
 The Charge request is simply a set of query string parameters which
-are appended to a Base URL. Be sure to properly encode the query
+are appended to a base URL. Be sure to properly encode the query
 string parameters.
 
 Base URL: `com-innerfence-ccterminal://charge/1.0.0/`
@@ -187,6 +188,10 @@ your own Visual Studio project.
 
 * App.xaml
 * App.xaml.cs
+
+Main application that handles the response when activated via your
+registered protocol URL scheme.
+
 * MainPage.xaml
 * MainPage.xaml.cs
 
