@@ -79,13 +79,13 @@ namespace InnerFence.ChargeAPI
 
             if (String.IsNullOrEmpty(query))
             {
-                throw new Exception("Invalid Request [1]");
+                throw new Exception("Invalid Request: Query string is empty");
             }
 
             Dictionary<string, string> parameters = this.ParseQueryString(query);
             if (parameters.Count == 0)
             {
-                throw new Exception("Invalid Request [2]");
+                throw new Exception("Invalid Request: Query string has no params");
             }
 
             if (parameters.ContainsKey(Keys.AMOUNT))
@@ -201,7 +201,7 @@ namespace InnerFence.ChargeAPI
         {
             if (null != value && !pattern.Match(value).Success)
             {
-                throw new ArgumentException(fieldName);
+                throw new ArgumentException(String.Format("Invalid value provided for {0}", fieldName));
             }
         }
     }
