@@ -45,7 +45,7 @@ namespace InnerFence.ChargeDemo
             // application.
             //
             // The simplest way to do this is just to set the property:
-            // chargeRequest.ReturnURL = @"com-innerfence-ChargeDemo://chargeResponse";
+            // chargeRequest.ReturnURL = @"com-innerfence-chargedemo://chargeResponse";
             //
             // But since it's so common to include app-specific parameters in
             // the return URL, you can use the SetReturnURL()
@@ -62,7 +62,7 @@ namespace InnerFence.ChargeDemo
             Dictionary<string, string> extraParams =
                new Dictionary<string, string>() { { "record_id", "123" } };
             chargeRequest.SetReturnURL(
-                @"com-innerfence-ChargeDemo://chargeResponse",
+                @"com-innerfence-chargedemo://chargeResponse",
                 extraParams
             );
 
@@ -93,13 +93,6 @@ namespace InnerFence.ChargeDemo
                 var messageDialog = new MessageDialog("Could not launch Credit Card Terminal. Please ensure it has been installed.");
                 await messageDialog.ShowAsync();
             }
-        }
-
-        private async void HandleResponse()
-        {
-            // Show the message dialog
-            var messageDialog = new MessageDialog("Charge failed.");
-            await messageDialog.ShowAsync();
         }
     }
 }
