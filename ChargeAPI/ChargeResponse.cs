@@ -43,7 +43,7 @@ namespace InnerFence.ChargeAPI
             public static readonly Regex TAX_AMOUNT = new Regex("^(0|[1-9][0-9]*)[.][0-9][0-9]$");
             public static readonly Regex TAX_RATE = new Regex("^[0-9]{1,2}([.][0-9]{1,3})?$");
             public static readonly Regex TIP_AMOUNT = new Regex("^(0|[1-9][0-9]*)[.][0-9][0-9]$");
-            public static readonly Regex TRANSACTION_ID = new Regex("^.{1,255}");
+            public static readonly Regex TRANSACTION_ID = new Regex("^.{1,255}$");
         }
 
         public static class Type
