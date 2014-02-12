@@ -54,18 +54,20 @@ namespace InnerFence.ChargeAPI
             public const string ERROR = "error";
         }
 
-        public String Amount { get; private set; }
-        public String CardType { get; private set; }
-        public String Currency { get; private set; }
-        public String ErrorMessage { get; private set; }
-        public Dictionary<string, string> ExtraParams { get; private set; }
-        public String RedactedCardNumber { get; private set; }
-        public Code ResponseCode { get; private set; }
-        public String ResponseType { get; private set; }
-        public String TaxAmount { get; private set; }
-        public String TaxRate { get; private set; }
-        public String TipAmount { get; private set; }
-        public String TransactionId { get; private set; }
+        public String Amount { get; protected set; }
+        public String CardType { get; protected set; }
+        public String Currency { get; protected set; }
+        public virtual String ErrorMessage { get; protected set; }
+        public Dictionary<string, string> ExtraParams { get; protected set; }
+        public String RedactedCardNumber { get; protected set; }
+        public Code ResponseCode { get; protected set; }
+        public String ResponseType { get; protected set; }
+        public String TaxAmount { get; protected set; }
+        public String TaxRate { get; protected set; }
+        public String TipAmount { get; protected set; }
+        public String TransactionId { get; protected set; }
+
+        protected ChargeResponse() { }
 
         public ChargeResponse(Uri responseUri)
         {
@@ -148,9 +150,9 @@ namespace InnerFence.ChargeAPI
             }
 
             this.ExtraParams = new Dictionary<string, string>();
-            foreach( var parameter in parameters )
+            foreach (var parameter in parameters)
             {
-                if( !parameter.Key.StartsWith("ifcc_") )
+                if (!parameter.Key.StartsWith("ifcc_"))
                 {
                     this.ExtraParams[parameter.Key] = parameter.Value;
                 }
