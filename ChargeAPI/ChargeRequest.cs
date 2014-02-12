@@ -122,7 +122,6 @@ namespace InnerFence.ChargeAPI
                 }
             }
 
-
             // Launch the URI
             return new Uri(uriToLaunch.TrimEnd('&'));
         }
