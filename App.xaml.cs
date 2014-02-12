@@ -120,7 +120,16 @@ namespace InnerFence.ChargeDemo
             }
 
             Uri uri = protocolArgs.Uri;
-            ChargeResponse response = new ChargeResponse(uri);
+            ChargeResponse response;
+            try
+            {
+                response = new ChargeResponse(uri);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(ex.Message);
+                return;
+            }
             this.HandleResponse(response);
         }
 
