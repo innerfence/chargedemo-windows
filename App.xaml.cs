@@ -144,6 +144,7 @@ namespace InnerFence.ChargeDemo
                     response.Currency,
                     response.CardType,
                     response.RedactedCardNumber);
+                ShowMessage(message);
             }
             else // other response code values are documented in ChargeResponse.cs
             {
