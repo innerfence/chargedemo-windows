@@ -136,11 +136,11 @@ namespace InnerFence.ChargeAPI
             {
                 this.ResponseCode = Code.APPROVED;
             }
-            if (this.ResponseType == Type.CANCELLED)
+            else if (this.ResponseType == Type.CANCELLED)
             {
                 this.ResponseCode = Code.CANCELLED;
             }
-            if (this.ResponseType == Type.DECLINED)
+            else if (this.ResponseType == Type.DECLINED)
             {
                 this.ResponseCode = Code.DECLINED;
             }
