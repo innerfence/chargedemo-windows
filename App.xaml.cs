@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InnerFence.ChargeAPI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -104,6 +106,63 @@ namespace InnerFence.ChargeDemo
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+
+            // Only respond to protocol activation
+            var protocolArgs = args as ProtocolActivatedEventArgs;
+            if (args.Kind != ActivationKind.Protocol || protocolArgs == null)
+            {
+                return;
+            }
+
+            Uri uri = protocolArgs.Uri;
+            ChargeResponse response = new ChargeResponse(uri);
+            this.HandleResponse(response);
+        }
+
+        private void HandleResponse(ChargeResponse response)
+        {
+            if (response.ResponseCode == ChargeResponse.Code.APPROVED)
+            {
+                string recordId;
+                response.ExtraParams.TryGetValue("record_id", out recordId);
+
+                string message = String.Format(
+                    "Charged!\n" +
+                    "Record: {0}\n" +
+                    "Transaction ID: {1}\n" +
+                    "Amount: {2} {3}\n" +
+                    "Card Type: {4}\n" +
+                    "Redacted Number: {5}",
+                    recordId,
+                    response.TransactionId,
+                    response.Amount,
+                    response.Currency,
+                    response.CardType,
+                    response.RedactedCardNumber);
+            }
+            else // other response code values are documented in ChargeResponse.cs
+            {
+                string recordId;
+                response.ExtraParams.TryGetValue("record_id", out recordId);
+
+                string message = String.Format(
+                    "Not Charged!\n" +
+                    "Record: {0}",
+                    recordId);
+                ShowMessage(message);
+            }
+        }
+
+        private async void ShowMessage(string message)
+        {
+            // Show the message dialog
+            var messageDialog = new MessageDialog(message);
+            await messageDialog.ShowAsync();
         }
     }
 }
