@@ -37,7 +37,6 @@ namespace InnerFence.ChargeAPI
             public static readonly Regex AMOUNT = new Regex("^(0|[1-9][0-9]*)[.][0-9][0-9]$");
             public static readonly Regex CARD_TYPE = new Regex("^[A-Za-z ]{0,20}$");
             public static readonly Regex CURRENCY = new Regex("^[A-Z]{3}$");
-            public static readonly Regex ERROR_MESSAGE = new Regex("^.*$");
             public static readonly Regex REDACTED_CARD_NUMBER = new Regex("^X*[0-9]{4}$");
             public static readonly Regex RESPONSE_TYPE = new Regex("^[a-z]*$");
             public static readonly Regex TAX_AMOUNT = new Regex("^(0|[1-9][0-9]*)[.][0-9][0-9]$");
@@ -190,7 +189,6 @@ namespace InnerFence.ChargeAPI
             this.ValidateField(Patterns.AMOUNT, this.Amount, Keys.AMOUNT);
             this.ValidateField(Patterns.CARD_TYPE, this.CardType, Keys.CARD_TYPE);
             this.ValidateField(Patterns.CURRENCY, this.Currency, Keys.CURRENCY);
-            this.ValidateField(Patterns.ERROR_MESSAGE, this.ErrorMessage, Keys.ERROR_MESSAGE);
             this.ValidateField(Patterns.REDACTED_CARD_NUMBER, this.RedactedCardNumber, Keys.REDACTED_CARD_NUMBER);
             this.ValidateField(Patterns.RESPONSE_TYPE, this.ResponseType, Keys.RESPONSE_TYPE);
             this.ValidateField(Patterns.TAX_AMOUNT, this.TaxAmount, Keys.TAX_AMOUNT);
