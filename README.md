@@ -33,10 +33,12 @@ INTEGRATION CHECKLIST
 
 * Request payment by creating an ChargeRequest object, setting its
   properties, calling its `GenerateLaunchURL()` method, and launching
-  the returned URL. Be sure to set the returnURL property if you want
-  us to return the results to your app. Consider using `SetReturnURL(
-  returnUrl, extraParams )` to automatically include extra parameters
-  in the query string. For example:
+  the returned URL. We've also provided a helpful
+  `ChargeUtils.SubmitChargeReqeust()` method that will set up your
+  launch options properly. Be sure to set the returnURL if you want us
+  to return the results to your app by using `SetReturnURL()`. You can
+  include extra parameters to be returned to you by passing them into
+  `SetReturnURL()`. For example:
 
 ```cs
 ChargeRequest chargeRequest = new ChargeRequest();
@@ -56,8 +58,16 @@ chargeRequest.InvoiceNumber = "321";
 chargeRequest.TaxRate = "8.5";
 
 // Submit request
-Uri launchURL = chargeRequest.GenerateLaunchURL();
-var success = await Launcher.LaunchUriAsync(launchURL);
+try
+{
+    ChargeUtils.SubmitChargeRequest(chargeRequest);
+}
+catch (Exception)
+{
+    // An Exception is thrown when we are unable to launch
+    // Credit Card Terminal. This usually means the app is
+    // not installed.
+}
 ```
 
 * Handle charge responses in your app’s
@@ -182,8 +192,8 @@ code in this sample.
 
 * ChargeAPI/ChargeRequest.cs
 * ChargeAPI/ChargeResponse.cs
-* ChargeAPI/Utils.cs
-* ChargeAPI/UtilsWindows.cs
+* ChargeAPI/ChargeUtils.cs
+* ChargeAPI/ChargeUtilsWindows.cs
 
 The ChargeRequest, ChargeResponse, and Utils classes. Copy these files
 into your own Visual Studio project.
