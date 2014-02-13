@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace InnerFence.ChargeAPI
 {
@@ -66,7 +65,7 @@ namespace InnerFence.ChargeAPI
             Uri uri = new Uri(returnURL);
 
             // genereate nonce and add it to extra params
-            if( null == extraParams)
+            if (null == extraParams)
             {
                 extraParams = new Dictionary<string, string>();
             }
@@ -106,7 +105,7 @@ namespace InnerFence.ChargeAPI
         public string CreateAndStoreNonce()
         {
             string nonce = Utils.GenerateNonce();
-            ApplicationData.Current.LocalSettings.Values[ChargeResponse.Keys.NONCE] = nonce;
+            Utils.SaveLocalData(ChargeResponse.Keys.NONCE, nonce);
             return nonce;
         }
 

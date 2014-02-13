@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace InnerFence.ChargeAPI
 {
@@ -95,7 +94,7 @@ namespace InnerFence.ChargeAPI
                 throw new Exception("No nonce was provided.");
             }
             string nonce = parameters[Keys.NONCE];
-            this.ValidateNonce( nonce);
+            this.ValidateNonce(nonce);
 
             // Parse parameters
             if (parameters.ContainsKey(Keys.AMOUNT))
@@ -181,23 +180,22 @@ namespace InnerFence.ChargeAPI
             this.ValidateField(Patterns.TRANSACTION_ID, this.TransactionId, Keys.TRANSACTION_ID);
         }
 
-        private void ValidateNonce( string nonce )
+        private void ValidateNonce(string nonce)
         {
             // Validate nonce
-            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(Keys.NONCE) ||
-                String.IsNullOrEmpty((string)ApplicationData.Current.LocalSettings.Values[Keys.NONCE]))
+            string savedNonce = (string)Utils.RetrieveLocalData(Keys.NONCE);
+            if (String.IsNullOrEmpty(savedNonce))
             {
                 throw new Exception("No nonce was saved.");
             }
 
-            string saved_nonce = (string)ApplicationData.Current.LocalSettings.Values[Keys.NONCE];
-            if (!nonce.Equals(saved_nonce, StringComparison.Ordinal))
+            if (!nonce.Equals(savedNonce, StringComparison.Ordinal))
             {
                 throw new Exception("Nonce doesn't match.");
             }
 
             // Nonce validated, clear saved nonce
-            ApplicationData.Current.LocalSettings.Values.Remove(Keys.NONCE);
+            Utils.DeleteLocalData(Keys.NONCE);
         }
 
         public void ValidateField(Regex pattern, string value, string fieldName)

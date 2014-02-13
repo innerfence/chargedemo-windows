@@ -111,6 +111,7 @@
     <Compile Include="ChargeAPI\ChargeRequest.cs" />
     <Compile Include="ChargeAPI\ChargeResponse.cs" />
     <Compile Include="ChargeAPI\Utils.cs" />
+    <Compile Include="ChargeAPI\UtilsWindows.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

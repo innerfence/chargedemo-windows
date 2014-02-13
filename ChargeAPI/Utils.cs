@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InnerFence.ChargeAPI
 {
-    public static class Utils
+    public static partial class Utils
     {
         private const string NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
         private const int NONCE_LENGTH = 27; // same size as base64-encoded SHA1 seems good
