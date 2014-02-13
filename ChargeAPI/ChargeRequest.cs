@@ -10,6 +10,8 @@ namespace InnerFence.ChargeAPI
     public class ChargeRequest
     {
         public const string CCTERMINAL_BASE_URL = @"com-innerfence-ccterminal://charge/1.0.0/";
+        public const string CCTERMINAL_DISPLAY_NAME = "Credit Card Terminal";
+        public const string CCTERMINAL_PACKAGE_FAMILY_NAME = "InnerFence.CreditCardTerminal_0mbyxksw3w1fr";
 
         public static class Keys
         {
