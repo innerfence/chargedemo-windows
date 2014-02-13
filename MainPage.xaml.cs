@@ -6,9 +6,6 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.System;
-using Windows.UI.Popups;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,7 +28,7 @@ namespace InnerFence.ChargeDemo
             this.InitializeComponent();
         }
 
-        private async void ChargeButton_Click(object sender, RoutedEventArgs e)
+        private void ChargeButton_Click(object sender, RoutedEventArgs e)
         {
             // Create the ChargeRequest using the default constructor
             ChargeRequest chargeRequest = new ChargeRequest();
@@ -85,22 +82,7 @@ namespace InnerFence.ChargeDemo
             chargeRequest.Zip = "98021";
 
             // Submit request
-            Uri launchURL = chargeRequest.GenerateLaunchURL();
-
-            // Set the launch options in case user doesn't have Credit Card Terminal installed
-            var launchOptions = new Windows.System.LauncherOptions();
-            launchOptions.PreferredApplicationDisplayName = ChargeRequest.CCTERMINAL_DISPLAY_NAME;
-            launchOptions.PreferredApplicationPackageFamilyName = ChargeRequest.CCTERMINAL_PACKAGE_FAMILY_NAME;
-            launchOptions.DesiredRemainingView = ViewSizePreference.UseNone;
-
-            var success = await Launcher.LaunchUriAsync(launchURL, launchOptions);
-
-            if (!success)
-            {
-                // Handle the case when Credit Card Terminal isn't installed
-                var messageDialog = new MessageDialog("Could not launch Credit Card Terminal. Please ensure it has been installed.");
-                await messageDialog.ShowAsync();
-            }
+            Utils.SubmitChargeRequest(chargeRequest);
         }
     }
 }
