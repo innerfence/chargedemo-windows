@@ -62,7 +62,7 @@ namespace InnerFence.ChargeAPI
         public void SetReturnURL(string returnURL, Dictionary<string, string> extraParams)
         {
             Uri uri = new Uri(returnURL);
-            this.ReturnURL = this.GenerateUriWithAdditionalParameters(uri, extraParams).ToString();
+            this.ReturnURL = Utils.UriWithAdditionalParams(uri, extraParams).ToString();
         }
 
         public Dictionary<string, string> GenerateParams()
@@ -92,65 +92,11 @@ namespace InnerFence.ChargeAPI
             return parameters;
         }
 
-        private Uri GenerateUriWithAdditionalParameters(Uri uri, Dictionary<string, string> newParameters)
-        {
-            Dictionary<string, string> parameters;
-            if (String.IsNullOrEmpty(uri.Query))
-            {
-                parameters = newParameters;
-            }
-            else
-            {
-                // extract existing query string parameters
-                WwwFormUrlDecoder decoder = new WwwFormUrlDecoder(uri.Query);
-                parameters = decoder.ToDictionary(x => x.Name, x => x.Value);
-
-                // add new parameters -- new parameters will overwrite old ones if key already exists
-                foreach (var param in newParameters)
-                {
-                    parameters[param.Key] = param.Value;
-                }
-            }
-
-            if (parameters.Count == 0)
-            {
-                // no parameters = no query string.
-                return uri;
-            }
-
-            // loop through parameters to generate param list
-            List<string> paramList = new List<string>();
-            foreach (var param in parameters)
-            {
-                if (param.Value != null)
-                {
-                    paramList.Add(
-                        String.Format("{0}={1}",
-                        Uri.EscapeDataString(param.Key),
-                        Uri.EscapeDataString(param.Value))
-                    );
-                }
-            }
-
-            // join param list with & and prefix it with ?
-            string queryString = String.Join("&", paramList);
-            queryString = String.Format("?{0}", queryString);
-
-            string uriString = String.Format(
-                "{0}://{1}{2}{3}",
-                uri.Scheme,
-                uri.Host,
-                uri.AbsolutePath,
-                queryString);
-
-            return new Uri(uriString);
-        }
-
         public Uri GenerateLaunchURL()
         {
             Uri uri = new Uri(CCTERMINAL_BASE_URL);
             Dictionary<string, string> parameters = this.GenerateParams();
-            return GenerateUriWithAdditionalParameters(uri, parameters);
+            return Utils.UriWithAdditionalParams(uri, parameters);
         }
     }
 }

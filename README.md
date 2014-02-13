@@ -1,4 +1,4 @@
-OVERVIEW
+﻿OVERVIEW
 ========
 
 The ChargeDemo source code demonstrates how to implement 2-way
@@ -182,9 +182,10 @@ code in this sample.
 
 * ChargeAPI/ChargeRequest.cs
 * ChargeAPI/ChargeResponse.cs
+* ChargeAPI/Utils.cs
 
-The ChargeRequest and ChargeResponse classes. Copy these files into
-your own Visual Studio project.
+The ChargeRequest, ChargeResponse, and Utils classes. Copy these files
+into your own Visual Studio project.
 
 * App.xaml
 * App.xaml.cs

@@ -76,15 +76,13 @@ namespace InnerFence.ChargeAPI
                 throw new ArgumentNullException("uri");
             }
 
-            string query = responseUri.Query.TrimStart('?');
-
+            string query = responseUri.Query;
             if (String.IsNullOrEmpty(query))
             {
                 throw new Exception("Invalid Request: Query string is empty");
             }
 
-            WwwFormUrlDecoder decoder = new WwwFormUrlDecoder(responseUri.Query);
-            Dictionary<string, string> parameters = decoder.ToDictionary(x => x.Name, x => x.Value);
+            Dictionary<string, string> parameters = Utils.ParseQueryString(query);
             if (parameters.Count == 0)
             {
                 throw new Exception("Invalid Request: Query string has no params");
