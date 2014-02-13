@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace InnerFence.ChargeAPI
 {
@@ -24,6 +25,7 @@ namespace InnerFence.ChargeAPI
             public const string CURRENCY = "ifcc_currency";
             public const string ERROR_MESSAGE = "ifcc_errorMessage";
             public const string EXTRA_PARAMS = "ifcc_extraParams";
+            public const string NONCE = "ifcc_nonce";
             public const string REDACTED_CARD_NUMBER = "ifcc_redactedCardNumber";
             public const string RESPONSE_TYPE = "ifcc_responseType";
             public const string TAX_AMOUNT = "ifcc_taxAmount";
@@ -87,6 +89,15 @@ namespace InnerFence.ChargeAPI
                 throw new Exception("Invalid Request: Query string has no params");
             }
 
+            // Validate nonce
+            if (!parameters.ContainsKey(Keys.NONCE) || String.IsNullOrEmpty(parameters[Keys.NONCE]))
+            {
+                throw new Exception("No nonce was provided.");
+            }
+            string nonce = parameters[Keys.NONCE];
+            this.ValidateNonce( nonce);
+
+            // Parse parameters
             if (parameters.ContainsKey(Keys.AMOUNT))
             {
                 this.Amount = parameters[Keys.AMOUNT];
@@ -168,6 +179,25 @@ namespace InnerFence.ChargeAPI
             this.ValidateField(Patterns.TAX_RATE, this.TaxRate, Keys.TAX_RATE);
             this.ValidateField(Patterns.TIP_AMOUNT, this.TipAmount, Keys.TIP_AMOUNT);
             this.ValidateField(Patterns.TRANSACTION_ID, this.TransactionId, Keys.TRANSACTION_ID);
+        }
+
+        private void ValidateNonce( string nonce )
+        {
+            // Validate nonce
+            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(Keys.NONCE) ||
+                String.IsNullOrEmpty((string)ApplicationData.Current.LocalSettings.Values[Keys.NONCE]))
+            {
+                throw new Exception("No nonce was saved.");
+            }
+
+            string saved_nonce = (string)ApplicationData.Current.LocalSettings.Values[Keys.NONCE];
+            if (!nonce.Equals(saved_nonce, StringComparison.Ordinal))
+            {
+                throw new Exception("Nonce doesn't match.");
+            }
+
+            // Nonce validated, clear saved nonce
+            ApplicationData.Current.LocalSettings.Values.Remove(Keys.NONCE);
         }
 
         public void ValidateField(Regex pattern, string value, string fieldName)

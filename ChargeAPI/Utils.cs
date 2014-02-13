@@ -8,6 +8,21 @@ namespace InnerFence.ChargeAPI
 {
     public static class Utils
     {
+        private const string NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+        private const int NONCE_LENGTH = 27; // same size as base64-encoded SHA1 seems good
+
+        public static string GenerateNonce()
+        {
+            Random random = new Random();
+            var nonceString = new StringBuilder();
+            for (int i = 0; i < NONCE_LENGTH; i++)
+            {
+                nonceString.Append(NONCE_ALPHABET[random.Next(0, NONCE_ALPHABET.Length - 1)]);
+            }
+
+            return nonceString.ToString();
+        }
+
         public static Dictionary<string, string> ParseQueryString(string query)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();

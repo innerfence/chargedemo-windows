@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace InnerFence.ChargeAPI
 {
@@ -55,7 +56,7 @@ namespace InnerFence.ChargeAPI
         public string Phone { get; set; }
         public string ReturnAppName { get; set; }
         public string ReturnImmediately { get; set; }
-        public string ReturnURL { get; set; }
+        public string ReturnURL { get; protected set; }
         public string State { get; set; }
         public string TaxRate { get; set; }
         public string Zip { get; set; }
@@ -63,6 +64,15 @@ namespace InnerFence.ChargeAPI
         public void SetReturnURL(string returnURL, Dictionary<string, string> extraParams)
         {
             Uri uri = new Uri(returnURL);
+
+            // genereate nonce and add it to extra params
+            if( null == extraParams)
+            {
+                extraParams = new Dictionary<string, string>();
+            }
+            string nonce = CreateAndStoreNonce();
+            extraParams.Add(ChargeResponse.Keys.NONCE, nonce);
+
             this.ReturnURL = Utils.UriWithAdditionalParams(uri, extraParams).ToString();
         }
 
@@ -91,6 +101,13 @@ namespace InnerFence.ChargeAPI
             parameters.Add(Keys.ZIP, this.Zip);
 
             return parameters;
+        }
+
+        public string CreateAndStoreNonce()
+        {
+            string nonce = Utils.GenerateNonce();
+            ApplicationData.Current.LocalSettings.Values[ChargeResponse.Keys.NONCE] = nonce;
+            return nonce;
         }
 
         public Uri GenerateLaunchURL()
