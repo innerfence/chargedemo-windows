@@ -183,6 +183,7 @@ code in this sample.
 * ChargeAPI/ChargeRequest.cs
 * ChargeAPI/ChargeResponse.cs
 * ChargeAPI/Utils.cs
+* ChargeAPI/UtilsWindows.cs
 
 The ChargeRequest, ChargeResponse, and Utils classes. Copy these files
 into your own Visual Studio project.
