@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -43,7 +45,7 @@ namespace InnerFence.ChargeDemo
             // application.
             //
             // The simplest way to do this is just to set the property:
-            // chargeRequest.ReturnURL = @"com-innerfence-chargedemo://chargeResponse";
+            // chargeRequest.ReturnURL = @"com-innerfence-chargedemo://chargeresponse";
             //
             // But since it's so common to include app-specific parameters in
             // the return URL, you can use the SetReturnURL()
@@ -60,7 +62,7 @@ namespace InnerFence.ChargeDemo
             Dictionary<string, string> extraParams =
                new Dictionary<string, string>() { { "record_id", "123" } };
             chargeRequest.SetReturnURL(
-                @"com-innerfence-chargedemo://chargeResponse",
+                @"com-innerfence-chargedemo://chargeresponse",
                 extraParams
             );
 
@@ -81,8 +83,54 @@ namespace InnerFence.ChargeDemo
             chargeRequest.State = "HI";
             chargeRequest.Zip = "98021";
 
-            // Submit request
-            Utils.SubmitChargeRequest(chargeRequest);
+            // Submitting the request will launch Credit Card Terminal
+            try
+            {
+                Utils.SubmitChargeRequest(chargeRequest);
+            }
+            catch (Exception)
+            {
+                // An Exception is thrown when we are unable to launch
+                // Credit Card Terminal. This usually means the app is
+                // not installed.
+                HandleCCTerminalNotInstalled();
+            }
+        }
+
+        private async void HandleCCTerminalNotInstalled()
+        {
+            // We suggest showing the user an error with a easy way
+            // to download the app by showing a message dialog similar
+            // to the one below.
+            var messageDialog = new MessageDialog(
+                "You'll need to install Credit Card Terminal before you can use this feature. " +
+                "Click Install below to begin the installation process.");
+
+            // Add commands and set their callbacks; both buttons use the same callback
+            messageDialog.Commands.Add(new UICommand(
+                "Install",
+                new UICommandInvokedHandler(this.CommandInvokedHandler)));
+            messageDialog.Commands.Add(new UICommand(
+                "Close",
+                new UICommandInvokedHandler(this.CommandInvokedHandler)));
+
+            // Set the command that will be invoked by default
+            messageDialog.DefaultCommandIndex = 0;
+
+            // Set the command to be invoked when escape is pressed
+            messageDialog.CancelCommandIndex = 1;
+
+            // Show the message dialog
+            await messageDialog.ShowAsync();
+        }
+
+        private async void CommandInvokedHandler(IUICommand command)
+        {
+            if (command.Label.Equals("Install"))
+            {
+                // Open the windows store link to Credit Card Terminal
+                await Launcher.LaunchUriAsync(new Uri(ChargeRequest.CCTERMINAL_WINDOWS_STORE_LINK));
+            }
         }
     }
 }

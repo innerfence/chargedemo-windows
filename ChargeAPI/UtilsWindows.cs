@@ -46,9 +46,7 @@ namespace InnerFence.ChargeAPI
 
             if (!success)
             {
-                // Handle the case when Credit Card Terminal isn't installed
-                var messageDialog = new MessageDialog("Could not launch Credit Card Terminal. Please ensure it has been installed.");
-                await messageDialog.ShowAsync();
+                throw new Exception("Could not launch Credit Card Terminal. Please ensure it has been installed.");
             }
         }
     }

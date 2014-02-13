@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -26,6 +27,8 @@ namespace InnerFence.ChargeDemo
     /// </summary>
     sealed partial class App : Application
     {
+        private static readonly Regex RecordIdPattern = new Regex("^[0-9]+$");
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -112,21 +115,41 @@ namespace InnerFence.ChargeDemo
         {
             base.OnActivated(args);
 
-            // Only respond to protocol activation
+            // When the transaction is complete, we'll launch the returnUrl
+            // if you provided one to us.
+
             var protocolArgs = args as ProtocolActivatedEventArgs;
             if (args.Kind != ActivationKind.Protocol || protocolArgs == null)
             {
+                // There are several ways your app can be activated.
+                // We are only concern with the case where we're activated.
+                // In your app, this might mean you should handle this
+                // differently.
                 return;
             }
 
             Uri uri = protocolArgs.Uri;
+
+            // This sample always uses com-innerfence-chargedemo://chargeresponse
+            // as the base return URL.
+            if (!uri.Host.Equals("chargeresponse"))
+            {
+                // In your app, this might mean that you should handle this as
+                // a normal URL request instead of a charge response.
+                return;
+            }
+
             ChargeResponse response;
             try
             {
+                // Creating the ChargeResponse object will throw an exception
+                // if there's a problem with the response URL parameters
                 response = new ChargeResponse(uri);
             }
             catch (Exception ex)
             {
+                // In the event the parsing fails, we will throw an exception
+                // and you should handle the error.
                 ShowMessage(ex.Message);
                 return;
             }
@@ -135,10 +158,23 @@ namespace InnerFence.ChargeDemo
 
         private void HandleResponse(ChargeResponse response)
         {
+            // You may want to perform different actions based on the
+            // response code. This example shows an message dialog with
+            // the response data when the charge is approved.
             if (response.ResponseCode == ChargeResponse.Code.APPROVED)
             {
+                // Any extra params we included with the return URL can be
+                // queried from the ExtraParams dictionary.
                 string recordId;
                 response.ExtraParams.TryGetValue("record_id", out recordId);
+
+                // The URL is a public attack vector for the app, so it's
+                // important to validate any parameters.
+                if (!this.IsValidRecordId(recordId))
+                {
+                    ShowMessage("Invalid Record ID");
+                    return;
+                }
 
                 string message = String.Format(
                     "Charged!\n" +
@@ -153,6 +189,11 @@ namespace InnerFence.ChargeDemo
                     response.Currency,
                     response.CardType,
                     response.RedactedCardNumber);
+
+                // Generally you would do something app-specific here,
+                // like load the record specified by recordId, record the
+                // success or failure, etc. Since this sample doesn't
+                // actually do much, we'll just pop a message dialog.
                 ShowMessage(message);
             }
             else // other response code values are documented in ChargeResponse.cs
@@ -168,9 +209,14 @@ namespace InnerFence.ChargeDemo
             }
         }
 
+        private bool IsValidRecordId(string recordId)
+        {
+            return null != recordId && RecordIdPattern.Match(recordId).Success;
+        }
+
         private async void ShowMessage(string message)
         {
-            // Show the message dialog
+            // Show message dialog
             var messageDialog = new MessageDialog(message);
             await messageDialog.ShowAsync();
         }

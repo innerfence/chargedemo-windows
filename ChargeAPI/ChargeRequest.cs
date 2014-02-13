@@ -12,6 +12,7 @@ namespace InnerFence.ChargeAPI
         public const string CCTERMINAL_BASE_URL = @"com-innerfence-ccterminal://charge/1.0.0/";
         public const string CCTERMINAL_DISPLAY_NAME = "Credit Card Terminal";
         public const string CCTERMINAL_PACKAGE_FAMILY_NAME = "InnerFence.CreditCardTerminal_0mbyxksw3w1fr";
+        public const string CCTERMINAL_WINDOWS_STORE_LINK = "ms-windows-store:PDP?PFN=" + CCTERMINAL_PACKAGE_FAMILY_NAME;
 
         public static class Keys
         {
