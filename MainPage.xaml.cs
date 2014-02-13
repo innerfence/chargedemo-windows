@@ -8,6 +8,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -90,6 +91,7 @@ namespace InnerFence.ChargeDemo
             var launchOptions = new Windows.System.LauncherOptions();
             launchOptions.PreferredApplicationDisplayName = ChargeRequest.CCTERMINAL_DISPLAY_NAME;
             launchOptions.PreferredApplicationPackageFamilyName = ChargeRequest.CCTERMINAL_PACKAGE_FAMILY_NAME;
+            launchOptions.DesiredRemainingView = ViewSizePreference.UseNone;
 
             var success = await Launcher.LaunchUriAsync(launchURL, launchOptions);
 
