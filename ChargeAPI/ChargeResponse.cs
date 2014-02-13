@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace InnerFence.ChargeAPI
 {
@@ -82,7 +83,8 @@ namespace InnerFence.ChargeAPI
                 throw new Exception("Invalid Request: Query string is empty");
             }
 
-            Dictionary<string, string> parameters = this.ParseQueryString(query);
+            WwwFormUrlDecoder decoder = new WwwFormUrlDecoder(responseUri.Query);
+            Dictionary<string, string> parameters = decoder.ToDictionary(x => x.Name, x => x.Value);
             if (parameters.Count == 0)
             {
                 throw new Exception("Invalid Request: Query string has no params");
@@ -156,32 +158,6 @@ namespace InnerFence.ChargeAPI
                     this.ExtraParams[parameter.Key] = parameter.Value;
                 }
             }
-        }
-
-        public Dictionary<string, string> ParseQueryString(string s)
-        {
-            Dictionary<string, string> data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            if (s == null)
-            {
-                return data;
-            }
-
-            foreach (string pair in s.Split('&'))
-            {
-                int index = pair.IndexOf('=');
-                if (index == -1)
-                {
-                    // Just the name, set it as an empty string
-                    data[Uri.UnescapeDataString(pair).Replace("+", "%20")] = "";
-                }
-                else
-                {
-                    // UnescapeDataString doesn't handle + characters, so replace any + in the unescaped values with an escaped space %20
-                    data[Uri.UnescapeDataString(pair.Substring(0, index).Replace("+", "%20"))] = Uri.UnescapeDataString(pair.Substring(index + 1).Replace("+", "%20"));
-                }
-            }
-
-            return data;
         }
 
         public void ValidateFields()
