@@ -86,7 +86,7 @@ namespace InnerFence.ChargeDemo
             // Submitting the request will launch Credit Card Terminal
             try
             {
-                Utils.SubmitChargeRequest(chargeRequest);
+                ChargeUtils.SubmitChargeRequest(chargeRequest);
             }
             catch (Exception)
             {

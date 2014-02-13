@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InnerFence.ChargeAPI
 {
-    public static partial class Utils
+    public static partial class ChargeUtils
     {
         private const string NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
         private const int NONCE_LENGTH = 27; // same size as base64-encoded SHA1 seems good
@@ -69,7 +69,7 @@ namespace InnerFence.ChargeAPI
             else
             {
                 // extract existing query string parameters
-                parameters = Utils.ParseQueryString(uri.Query);
+                parameters = ChargeUtils.ParseQueryString(uri.Query);
 
                 // add new parameters -- new parameters will overwrite old ones if key already exists
                 foreach (var param in newParameters)

@@ -10,7 +10,7 @@ using Windows.UI.ViewManagement;
 
 namespace InnerFence.ChargeAPI
 {
-    public static partial class Utils
+    public static partial class ChargeUtils
     {
         public static void DeleteLocalData(string key)
         {

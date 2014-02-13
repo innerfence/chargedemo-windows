@@ -73,7 +73,7 @@ namespace InnerFence.ChargeAPI
             string nonce = CreateAndStoreNonce();
             extraParams.Add(ChargeResponse.Keys.NONCE, nonce);
 
-            this.ReturnURL = Utils.UriWithAdditionalParams(uri, extraParams).ToString();
+            this.ReturnURL = ChargeUtils.UriWithAdditionalParams(uri, extraParams).ToString();
         }
 
         public Dictionary<string, string> GenerateParams()
@@ -105,8 +105,8 @@ namespace InnerFence.ChargeAPI
 
         public string CreateAndStoreNonce()
         {
-            string nonce = Utils.GenerateNonce();
-            Utils.SaveLocalData(ChargeResponse.Keys.NONCE, nonce);
+            string nonce = ChargeUtils.GenerateNonce();
+            ChargeUtils.SaveLocalData(ChargeResponse.Keys.NONCE, nonce);
             return nonce;
         }
 
@@ -114,7 +114,7 @@ namespace InnerFence.ChargeAPI
         {
             Uri uri = new Uri(CCTERMINAL_BASE_URL);
             Dictionary<string, string> parameters = this.GenerateParams();
-            return Utils.UriWithAdditionalParams(uri, parameters);
+            return ChargeUtils.UriWithAdditionalParams(uri, parameters);
         }
     }
 }

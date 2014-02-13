@@ -82,7 +82,7 @@ namespace InnerFence.ChargeAPI
                 throw new Exception("Invalid Request: Query string is empty");
             }
 
-            Dictionary<string, string> parameters = Utils.ParseQueryString(query);
+            Dictionary<string, string> parameters = ChargeUtils.ParseQueryString(query);
             if (parameters.Count == 0)
             {
                 throw new Exception("Invalid Request: Query string has no params");
@@ -183,7 +183,7 @@ namespace InnerFence.ChargeAPI
         private void ValidateNonce(string nonce)
         {
             // Validate nonce
-            string savedNonce = (string)Utils.RetrieveLocalData(Keys.NONCE);
+            string savedNonce = (string)ChargeUtils.RetrieveLocalData(Keys.NONCE);
             if (String.IsNullOrEmpty(savedNonce))
             {
                 throw new Exception("No nonce was saved.");
@@ -195,7 +195,7 @@ namespace InnerFence.ChargeAPI
             }
 
             // Nonce validated, clear saved nonce
-            Utils.DeleteLocalData(Keys.NONCE);
+            ChargeUtils.DeleteLocalData(Keys.NONCE);
         }
 
         public void ValidateField(Regex pattern, string value, string fieldName)
