@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace InnerFence.ChargeAPI
 {
@@ -59,21 +61,8 @@ namespace InnerFence.ChargeAPI
 
         public void SetReturnURL(string returnURL, Dictionary<string, string> extraParams)
         {
-            returnURL += "?";
-
-            foreach (var param in extraParams)
-            {
-                if (param.Value != null)
-                {
-                    returnURL += String.Format(
-                        "{0}={1}&",
-                        Uri.EscapeUriString(param.Key),
-                        Uri.EscapeUriString(param.Value)
-                    );
-                }
-            }
-
-            this.ReturnURL = returnURL.TrimEnd('&');
+            Uri uri = new Uri(returnURL);
+            this.ReturnURL = this.GenerateUriWithAdditionalParameters(uri, extraParams).ToString();
         }
 
         public Dictionary<string, string> GenerateParams()
@@ -103,27 +92,65 @@ namespace InnerFence.ChargeAPI
             return parameters;
         }
 
-        public Uri GenerateLaunchURL()
+        private Uri GenerateUriWithAdditionalParameters(Uri uri, Dictionary<string, string> newParameters)
         {
-            string uriToLaunch = CCTERMINAL_BASE_URL + "?";
+            Dictionary<string, string> parameters;
+            if (String.IsNullOrEmpty(uri.Query))
+            {
+                parameters = newParameters;
+            }
+            else
+            {
+                // extract existing query string parameters
+                WwwFormUrlDecoder decoder = new WwwFormUrlDecoder(uri.Query);
+                parameters = decoder.ToDictionary(x => x.Name, x => x.Value);
 
-            Dictionary<string, string> parameters = this.GenerateParams();
-            // TODO: generate params
+                // add new parameters -- new parameters will overwrite old ones if key already exists
+                foreach (var param in newParameters)
+                {
+                    parameters[param.Key] = param.Value;
+                }
+            }
 
+            if (parameters.Count == 0)
+            {
+                // no parameters = no query string.
+                return uri;
+            }
+
+            // loop through parameters to generate param list
+            List<string> paramList = new List<string>();
             foreach (var param in parameters)
             {
                 if (param.Value != null)
                 {
-                    uriToLaunch += String.Format(
-                        "{0}={1}&",
-                        Uri.EscapeUriString(param.Key),
-                        Uri.EscapeUriString(param.Value)
+                    paramList.Add(
+                        String.Format("{0}={1}",
+                        Uri.EscapeDataString(param.Key),
+                        Uri.EscapeDataString(param.Value))
                     );
                 }
             }
 
-            // Launch the URI
-            return new Uri(uriToLaunch.TrimEnd('&'));
+            // join param list with & and prefix it with ?
+            string queryString = String.Join("&", paramList);
+            queryString = String.Format("?{0}", queryString);
+
+            string uriString = String.Format(
+                "{0}://{1}{2}{3}",
+                uri.Scheme,
+                uri.Host,
+                uri.AbsolutePath,
+                queryString);
+
+            return new Uri(uriString);
+        }
+
+        public Uri GenerateLaunchURL()
+        {
+            Uri uri = new Uri(CCTERMINAL_BASE_URL);
+            Dictionary<string, string> parameters = this.GenerateParams();
+            return GenerateUriWithAdditionalParameters(uri, parameters);
         }
     }
 }
