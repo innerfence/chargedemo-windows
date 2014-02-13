@@ -89,7 +89,7 @@ namespace InnerFence.ChargeDemo
             // Set the launch options in case user doesn't have Credit Card Terminal installed
             var launchOptions = new Windows.System.LauncherOptions();
             launchOptions.PreferredApplicationDisplayName = ChargeRequest.CCTERMINAL_DISPLAY_NAME;
-            launchOptions.PreferredApplicationPackageFamilyName = ChargeRequest.CCTERMINAL_PACKAGE_FAMILY_NAME
+            launchOptions.PreferredApplicationPackageFamilyName = ChargeRequest.CCTERMINAL_PACKAGE_FAMILY_NAME;
 
             var success = await Launcher.LaunchUriAsync(launchURL, launchOptions);
 
