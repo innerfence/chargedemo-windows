@@ -146,7 +146,7 @@ namespace InnerFence.ChargeDemo
                 // if there's a problem with the response URL parameters
                 response = new ChargeResponse(uri);
             }
-            catch (Exception ex)
+            catch (ChargeException ex)
             {
                 // In the event the parsing fails, we will throw an exception
                 // and you should handle the error.

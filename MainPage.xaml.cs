@@ -88,7 +88,7 @@ namespace InnerFence.ChargeDemo
             {
                 ChargeUtils.SubmitChargeRequest(chargeRequest);
             }
-            catch (Exception)
+            catch (ChargeException)
             {
                 // An Exception is thrown when we are unable to launch
                 // Credit Card Terminal. This usually means the app is

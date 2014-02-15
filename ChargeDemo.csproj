@@ -108,6 +108,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChargeAPI\ChargeException.cs" />
     <Compile Include="ChargeAPI\ChargeRequest.cs" />
     <Compile Include="ChargeAPI\ChargeResponse.cs" />
     <Compile Include="ChargeAPI\ChargeUtils.cs" />

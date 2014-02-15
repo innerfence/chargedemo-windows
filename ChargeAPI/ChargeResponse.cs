@@ -79,19 +79,19 @@ namespace InnerFence.ChargeAPI
             string query = responseUri.Query;
             if (String.IsNullOrEmpty(query))
             {
-                throw new Exception("Invalid Request: Query string is empty");
+                throw new ChargeException("Invalid Request: Query string is empty");
             }
 
             Dictionary<string, string> parameters = ChargeUtils.ParseQueryString(query);
             if (parameters.Count == 0)
             {
-                throw new Exception("Invalid Request: Query string has no params");
+                throw new ChargeException("Invalid Request: Query string has no params");
             }
 
             // Validate nonce
             if (!parameters.ContainsKey(Keys.NONCE) || String.IsNullOrEmpty(parameters[Keys.NONCE]))
             {
-                throw new Exception("No nonce was provided.");
+                throw new ChargeException("No nonce was provided.");
             }
             string nonce = parameters[Keys.NONCE];
             this.ValidateNonce(nonce);
@@ -186,12 +186,12 @@ namespace InnerFence.ChargeAPI
             string savedNonce = (string)ChargeUtils.RetrieveLocalData(Keys.NONCE);
             if (String.IsNullOrEmpty(savedNonce))
             {
-                throw new Exception("No nonce was saved.");
+                throw new ChargeException("No nonce was saved.");
             }
 
             if (!nonce.Equals(savedNonce, StringComparison.Ordinal))
             {
-                throw new Exception("Nonce doesn't match.");
+                throw new ChargeException("Nonce doesn't match.");
             }
 
             // Nonce validated, clear saved nonce
@@ -202,7 +202,7 @@ namespace InnerFence.ChargeAPI
         {
             if (null != value && !pattern.Match(value).Success)
             {
-                throw new ArgumentException(String.Format("Invalid value provided for {0}", fieldName));
+                throw new ChargeException(String.Format("Invalid value provided for {0}", fieldName));
             }
         }
     }

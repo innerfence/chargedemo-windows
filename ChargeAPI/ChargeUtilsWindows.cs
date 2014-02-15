@@ -46,7 +46,7 @@ namespace InnerFence.ChargeAPI
 
             if (!success)
             {
-                throw new Exception("Could not launch Credit Card Terminal. Please ensure it has been installed.");
+                throw new ChargeException("Could not launch Credit Card Terminal. Please ensure it has been installed.");
             }
         }
     }
