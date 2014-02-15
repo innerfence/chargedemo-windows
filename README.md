@@ -190,13 +190,15 @@ This file.
 A copy of the MIT License, under which you may reuse any of the source
 code in this sample.
 
+* ChargeAPI/ChargeException.cs
 * ChargeAPI/ChargeRequest.cs
 * ChargeAPI/ChargeResponse.cs
 * ChargeAPI/ChargeUtils.cs
 * ChargeAPI/ChargeUtilsWindows.cs
 
-The ChargeRequest, ChargeResponse, ChargeUtils (2 files) classes. Copy
-these files into your own Visual Studio project.
+The ChargeRequest, ChargeResponse, ChargeUtils (2 files), and
+ChargeException classes. Copy these files into your own Visual Studio
+project.
 
 * App.xaml
 * App.xaml.cs
