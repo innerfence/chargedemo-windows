@@ -13,11 +13,11 @@ namespace InnerFence.ChargeAPI
 
         public static string GenerateNonce()
         {
-            Random random = new Random();
             var nonceString = new StringBuilder();
             for (int i = 0; i < NONCE_LENGTH; i++)
             {
-                nonceString.Append(NONCE_ALPHABET[random.Next(0, NONCE_ALPHABET.Length - 1)]);
+                uint position = ChargeUtils.GenerateRandomNumber() % (uint)NONCE_ALPHABET.Length;
+                nonceString.Append(NONCE_ALPHABET[(int)position]);
             }
 
             return nonceString.ToString();

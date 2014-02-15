@@ -7,6 +7,7 @@ using Windows.Storage;
 using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
+using Windows.Security.Cryptography;
 
 namespace InnerFence.ChargeAPI
 {
@@ -48,6 +49,11 @@ namespace InnerFence.ChargeAPI
             {
                 throw new ChargeException("Could not launch Credit Card Terminal. Please ensure it has been installed.");
             }
+        }
+
+        public static uint GenerateRandomNumber()
+        {
+            return CryptographicBuffer.GenerateRandomNumber();
         }
     }
 }
