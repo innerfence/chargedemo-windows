@@ -11,17 +11,23 @@ namespace InnerFence.ChargeAPI
     {
         public static void DeleteLocalData(string key)
         {
-            throw new NotImplementedException();
+            IsolatedStorageSettings.ApplicationSettings.Remove(key);
         }
 
         public static object RetrieveLocalData(string key)
         {
-            throw new NotImplementedException();
+            if (IsolatedStorageSettings.ApplicationSettings.Contains(key))
+            {
+                return IsolatedStorageSettings.ApplicationSettings[key];
+            }
+
+            return null;
         }
 
         public static void SaveLocalData(string key, object value)
         {
-            throw new NotImplementedException();
+            IsolatedStorageSettings.ApplicationSettings[key] = value;
+            IsolatedStorageSettings.ApplicationSettings.Save();
         }
 
         public static void SubmitChargeRequest(ChargeRequest chargeRequest)
