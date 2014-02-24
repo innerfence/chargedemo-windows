@@ -35,6 +35,7 @@ namespace InnerFence.ChargeAPI
 
         public static void SubmitChargeRequest(ChargeRequest chargeRequest)
         {
+            // TODO
             throw new NotImplementedException();
         }
 
@@ -44,7 +45,7 @@ namespace InnerFence.ChargeAPI
             {
                 s_rng = new RNGCryptoServiceProvider();
             }
-            byte[] bytes = new byte[8];
+            byte[] bytes = new byte[4];
             s_rng.GetBytes(bytes);
             return BitConverter.ToUInt32(bytes, 0);
         }
