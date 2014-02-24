@@ -20,11 +20,11 @@ namespace InnerFence.ChargeAPI
 
         public static object RetrieveLocalData(string key)
         {
-            if( ApplicationData.Current.LocalSettings.Values.ContainsKey(key) )
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
             {
                 return ApplicationData.Current.LocalSettings.Values[key];
             }
-               
+
             return null;
         }
 
