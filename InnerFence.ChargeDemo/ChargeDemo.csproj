@@ -7,7 +7,7 @@
     <ProjectGuid>{2CB1ED25-669F-400C-BEED-5D6D8E0075CE}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChargeDemo</RootNamespace>
+    <RootNamespace>InnerFence.ChargeDemo</RootNamespace>
     <AssemblyName>ChargeDemo</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>

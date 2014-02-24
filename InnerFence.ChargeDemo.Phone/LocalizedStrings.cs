@@ -1,6 +1,6 @@
-﻿using ChargeDemo.Phone.Resources;
+﻿using InnerFence.ChargeDemo.Phone.Resources;
 
-namespace ChargeDemo.Phone
+namespace InnerFence.ChargeDemo.Phone
 {
     /// <summary>
     /// Provides access to string resources.

@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using ChargeDemo.Phone.Resources;
+using InnerFence.ChargeDemo.Phone.Resources;
 
-namespace ChargeDemo.Phone
+namespace InnerFence.ChargeDemo.Phone
 {
     public partial class MainPage : PhoneApplicationPage
     {
