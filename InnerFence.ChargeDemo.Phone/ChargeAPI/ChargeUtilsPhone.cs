@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace InnerFence.ChargeAPI
 {
     public static partial class ChargeUtils
     {
+        private static RandomNumberGenerator s_rng;
+
         public static void DeleteLocalData(string key)
         {
             IsolatedStorageSettings.ApplicationSettings.Remove(key);
@@ -37,7 +40,13 @@ namespace InnerFence.ChargeAPI
 
         public static uint GenerateRandomNumber()
         {
-            throw new NotImplementedException();
+            if (s_rng == null)
+            {
+                s_rng = new RNGCryptoServiceProvider();
+            }
+            byte[] bytes = new byte[8];
+            s_rng.GetBytes(bytes);
+            return BitConverter.ToUInt32(bytes, 0);
         }
     }
 }
