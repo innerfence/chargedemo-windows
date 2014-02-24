@@ -105,13 +105,21 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeException.cs">
+      <Link>ChargeAPI\ChargeException.cs</Link>
+    </Compile>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeRequest.cs">
+      <Link>ChargeAPI\ChargeRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeResponse.cs">
+      <Link>ChargeAPI\ChargeResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeUtils.cs">
+      <Link>ChargeAPI\ChargeUtils.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChargeAPI\ChargeException.cs" />
-    <Compile Include="ChargeAPI\ChargeRequest.cs" />
-    <Compile Include="ChargeAPI\ChargeResponse.cs" />
-    <Compile Include="ChargeAPI\ChargeUtils.cs" />
     <Compile Include="ChargeAPI\ChargeUtilsWindows.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
