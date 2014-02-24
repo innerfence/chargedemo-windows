@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.System;
 
 namespace InnerFence.ChargeAPI
 {
@@ -33,10 +34,16 @@ namespace InnerFence.ChargeAPI
             IsolatedStorageSettings.ApplicationSettings.Save();
         }
 
-        public static void SubmitChargeRequest(ChargeRequest chargeRequest)
+        public static async void SubmitChargeRequest(ChargeRequest chargeRequest)
         {
-            // TODO
-            throw new NotImplementedException();
+            Uri launchURL = chargeRequest.GenerateLaunchURL();
+
+            var success = await Launcher.LaunchUriAsync(launchURL);
+
+            if (!success)
+            {
+                throw new ChargeException("Could not launch Credit Card Terminal. Please ensure it has been installed.");
+            }
         }
 
         public static uint GenerateRandomNumber()
