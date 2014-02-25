@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using InnerFence.ChargeDemo.Phone.Resources;
+using InnerFence.ChargeAPI;
 
 namespace InnerFence.ChargeDemo.Phone
 {
@@ -22,20 +23,76 @@ namespace InnerFence.ChargeDemo.Phone
             //BuildLocalizedApplicationBar();
         }
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+        private void ChargeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Create the ChargeRequest using the default constructor
+            ChargeRequest chargeRequest = new ChargeRequest();
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
+            // 2-way Integration
+            //
+            // By supplying the ReturnURL parameter, we give Credit Card
+            // Terminal a way to invoke us when the transaction is
+            // complete. If you don't give a ReturnURL, Credit Card Terminal
+            // will still launch and pre-fill the form values supplied, but
+            // there will be no way for the user to return to your
+            // application.
+            //
+            // The simplest way to do this is just to set the property:
+            // chargeRequest.ReturnURL = @"com-innerfence-chargedemo://chargeresponse";
+            //
+            // But since it's so common to include app-specific parameters in
+            // the return URL, you can use the SetReturnURL()
+            // method to provide a dictionary of app-specific parameters which
+            // are automatically encoded into the query string of the
+            // ReturnURL. Those parameters will be available in the
+            // ExtraParams dictionary of the ChargeResponse when the request
+            // is completed.
+            //
+            // In this sample, we include an app-specific "record_id"
+            // parameter set to the value 123. You may call extra parameters
+            // anything you like, but to avoid collision with charge-related
+            // parameters, the names may not begin with "ifcc_".
+            Dictionary<string, string> extraParams =
+               new Dictionary<string, string>() { { "record_id", "123" } };
+            chargeRequest.SetReturnURL(
+                @"com-innerfence-chargedemo://chargeresponse",
+                extraParams
+            );
 
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+            // Finally, we can supply customer and transaction data so that it
+            // will be pre-filled for submission with the charge.
+            chargeRequest.Address = "123 Test St";
+            chargeRequest.Amount = "50.00";
+            chargeRequest.Currency = "USD";
+            chargeRequest.City = "Nowhereville";
+            chargeRequest.Company = "Company Inc";
+            chargeRequest.Country = "US";
+            chargeRequest.Description = "Test transaction";
+            chargeRequest.Email = "johnexample.com";
+            chargeRequest.FirstName = "John";
+            chargeRequest.InvoiceNumber = "321";
+            chargeRequest.LastName = "Doe";
+            chargeRequest.Phone = "555-1212";
+            chargeRequest.State = "HI";
+            chargeRequest.Zip = "98021";
+
+            // Submitting the request will launch Credit Card Terminal
+            try
+            {
+                ChargeUtils.SubmitChargeRequest(chargeRequest);
+            }
+            catch (ChargeException)
+            {
+                // An Exception is thrown when we are unable to launch
+                // Credit Card Terminal. This usually means the app is
+                // not installed.
+                HandleCCTerminalNotInstalled();
+            }
+        }
+
+        private void HandleCCTerminalNotInstalled()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -46,7 +46,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="Charge" HorizontalAlignment="Left" VerticalAlignment="Top" Height="686" Width="456" FontSize="72"/>
+            <Button Content="Charge" HorizontalAlignment="Left" VerticalAlignment="Top" Height="686" Width="456" FontSize="72" Click="ChargeButton_Click"/>
 
         </Grid>
 
