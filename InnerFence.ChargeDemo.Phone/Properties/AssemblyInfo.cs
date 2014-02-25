@@ -6,11 +6,11 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ChargeDemo.Phone")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("InnerFence.ChargeDemo.Phone")]
+[assembly: AssemblyDescription("Charge Demo for Credit Card Terminal")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ChargeDemo.Phone")]
+[assembly: AssemblyCompany("Inner Fence")]
+[assembly: AssemblyProduct("Charge Demo")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
