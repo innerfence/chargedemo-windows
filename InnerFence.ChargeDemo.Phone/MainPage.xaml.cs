@@ -9,6 +9,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using InnerFence.ChargeDemo.Phone.Resources;
 using InnerFence.ChargeAPI;
+using Microsoft.Xna.Framework.GamerServices;
+using Windows.System;
 
 namespace InnerFence.ChargeDemo.Phone
 {
@@ -90,9 +92,35 @@ namespace InnerFence.ChargeDemo.Phone
             }
         }
 
-        private void HandleCCTerminalNotInstalled()
+        private async void HandleCCTerminalNotInstalled()
         {
-            throw new NotImplementedException();
+            // We suggest showing the user an error with a easy way
+            // to download the app by showing a message dialog similar
+            // to the one below.
+            IAsyncResult result = Guide.BeginShowMessageBox(
+                "App Not Installed",
+                "You'll need to install Credit Card Terminal before you can use this feature. " +
+                "Click Install below to begin the installation process.",
+                new string[] { "Install", "Close" },
+                0, // Set the command that will be invoked by default
+                Microsoft.Xna.Framework.GamerServices.MessageBoxIcon.Alert,
+                null,
+                null);
+
+            // Make message box synchronous
+            result.AsyncWaitHandle.WaitOne();
+
+            int? choice = Microsoft.Xna.Framework.GamerServices.Guide.EndShowMessageBox(result);
+            if (choice.HasValue)
+            {
+                if (choice.Value == 0)
+                {
+                    // User clicks on the Install button
+                    // Open the windows store link to Credit Card Terminal
+                    await Launcher.LaunchUriAsync(new Uri(ChargeRequest.CCTERMINAL_WP8_STORE_LINK));
+
+                }
+            }
         }
     }
 }
