@@ -84,7 +84,7 @@ namespace InnerFence.ChargeAPI
             parameters.Add(Keys.AMOUNT, this.Amount);
             parameters.Add(Keys.AMOUNT_FIXED, this.AmountFixed);
             parameters.Add(Keys.CITY, this.City);
-            parameters.Add(Keys.COMPANY, this.City);
+            parameters.Add(Keys.COMPANY, this.Company);
             parameters.Add(Keys.COUNTRY, this.Country);
             parameters.Add(Keys.CURRENCY, this.Currency);
             parameters.Add(Keys.DESCRIPTION, this.Description);
