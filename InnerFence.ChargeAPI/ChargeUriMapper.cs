@@ -42,7 +42,7 @@ namespace InnerFence.ChargeAPI
                 // call method to determine where to go / what to do
                 s_lastRedirectedUri = GenerateRedirectUri(launchUri);
                 s_lastRedirectedTime = DateTime.Now;
-                
+
                 return s_lastRedirectedUri;
             }
 

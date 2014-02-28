@@ -108,6 +108,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AssociationUriMapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ChargeAPI\ChargeUtilsPhone.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">

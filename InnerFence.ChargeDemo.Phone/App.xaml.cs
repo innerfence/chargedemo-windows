@@ -7,16 +7,32 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using InnerFence.ChargeDemo.Phone.Resources;
+using InnerFence.ChargeAPI;
+using Microsoft.Xna.Framework.GamerServices;
+using System.Text.RegularExpressions;
 
 namespace InnerFence.ChargeDemo.Phone
 {
     public partial class App : Application
     {
+        private static readonly Regex RecordIdPattern = new Regex("^[0-9]+$");
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        /// <summary>
+        /// Gets the current application.
+        /// </summary>
+        public new static App Current
+        {
+            get
+            {
+                return (App)Application.Current;
+            }
+        }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -116,6 +132,9 @@ namespace InnerFence.ChargeDemo.Phone
             // screen to remain active until the application is ready to render.
             RootFrame = new PhoneApplicationFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
+
+            // Assign the URI-mapper class to the application frame.
+            RootFrame.UriMapper = new AssociationUriMapper();
 
             // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
@@ -217,6 +236,95 @@ namespace InnerFence.ChargeDemo.Phone
                 }
 
                 throw;
+            }
+        }
+
+        public void HandleResponse(Uri responseUri)
+        {
+            ChargeResponse response;
+            try
+            {
+                // Creating the ChargeResponse object will throw an exception
+                // if there's a problem with the response URL parameters
+                response = new ChargeResponse(responseUri);
+            }
+            catch (ChargeException ex)
+            {
+                // In the event the parsing fails, we will throw an exception
+                // and you should handle the error.
+                ShowMessage(ex.Message);
+                return;
+            }
+
+            // You may want to perform different actions based on the
+            // response code. This example shows an message dialog with
+            // the response data when the charge is approved.
+            if (response.ResponseCode == ChargeResponse.Code.APPROVED)
+            {
+                // Any extra params we included with the return URL can be
+                // queried from the ExtraParams dictionary.
+                string recordId;
+                response.ExtraParams.TryGetValue("record_id", out recordId);
+
+                // The URL is a public attack vector for the app, so it's
+                // important to validate any parameters.
+                if (!this.IsValidRecordId(recordId))
+                {
+                    ShowMessage("Invalid Record ID");
+                    return;
+                }
+
+                string message = String.Format(
+                    "Charged!\n" +
+                    "Record: {0}\n" +
+                    "Transaction ID: {1}\n" +
+                    "Amount: {2} {3}\n" +
+                    "Card Type: {4}\n" +
+                    "Redacted Number: {5}",
+                    recordId,
+                    response.TransactionId,
+                    response.Amount,
+                    response.Currency,
+                    response.CardType,
+                    response.RedactedCardNumber);
+
+                // Generally you would do something app-specific here,
+                // like load the record specified by recordId, record the
+                // success or failure, etc. Since this sample doesn't
+                // actually do much, we'll just pop a message dialog.
+                ShowMessage(message);
+            }
+            else // other response code values are documented in ChargeResponse.cs
+            {
+                string recordId;
+                response.ExtraParams.TryGetValue("record_id", out recordId);
+
+                string message = String.Format(
+                    "Not Charged!\n" +
+                    "Record: {0}",
+                    recordId);
+                ShowMessage(message);
+            }
+        }
+
+        private bool IsValidRecordId(string recordId)
+        {
+            return null != recordId && RecordIdPattern.Match(recordId).Success;
+        }
+
+        private void ShowMessage(string message)
+        {
+            if (!Guide.IsVisible)
+            {
+                // Show message dialog
+                Guide.BeginShowMessageBox(
+                    "Credit Card Terminal",
+                    message,
+                    new string[] { "ok" },
+                    0,
+                    MessageBoxIcon.None,
+                    null,
+                    null);
             }
         }
     }
