@@ -99,9 +99,6 @@
     <Compile Include="..\InnerFence.ChargeAPI\ChargeResponse.cs">
       <Link>ChargeAPI\ChargeResponse.cs</Link>
     </Compile>
-    <Compile Include="..\InnerFence.ChargeAPI\ChargeUriMapper.cs">
-      <Link>ChargeAPI\ChargeUriMapper.cs</Link>
-    </Compile>
     <Compile Include="..\InnerFence.ChargeAPI\ChargeUtils.cs">
       <Link>ChargeAPI\ChargeUtils.cs</Link>
     </Compile>
@@ -111,6 +108,7 @@
     <Compile Include="AssociationUriMapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChargeAPI\ChargeUriMapper.cs" />
     <Compile Include="ChargeAPI\ChargeUtilsPhone.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
