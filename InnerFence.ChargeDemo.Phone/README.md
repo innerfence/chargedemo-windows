@@ -83,14 +83,60 @@ catch (ChargeException)
 }
 ```
 
-* Handle charge responses in your app’s
-  `OnActivated(IActivatedEventArgs args)` method by creating an
-  ChargeResponse object by passing the protocol Uri. Use the
+* Add a UriMapper to your `RootFrame` inside your app
+  `InitializePhoneApplication()`. The UriMapper is called whenever
+  there's an incoming request containing the data of our charge
+  response. Handle responses in UriMapper by creating an
+  ChargeResponse object by passing the launch Uri. Use the
   `ResponseCode` property to determine if the transaction was
   successful. For example:
 
 ```cs
-// TODO: SAMPLE CODE GOES HERE
+public class AssociationUriMapper : ChargeUriMapper
+{
+    protected override Uri GenerateRedirectUri(Uri launchUri)
+    {
+        ChargeResponse response = new ChargeResponse(launchUri);
+
+        // My record_id from the request is available in the extraParams
+        // dictionary.
+        string recordId = chargeResponse.ExtraParams["record_id"];
+
+        // Since this value is from the URL, I need to validate it.
+        if (!IsValidRecordId(recordId))
+        {
+            // handle error
+        }
+
+        if (chargeResponse.ResponseCode == ChargeResponse.Code.APPROVED)
+        {
+            // Transaction succeeded, check out these properties:
+            //  * chargeResponse.TransactionId
+            //  * chargeResponse.Amount (includes tax and tip)
+            //  * chargeResponse.TaxAmount
+            //  * chargeResponse.TaxRate
+            //  * chargeResponse.TipAmount
+            //  * chargeResponse.CardType
+            //  * chargeResponse.RedactedCardNumber
+        }
+        else
+        {
+            // Transaction failed.
+        }
+
+        // In your app, this is where you define which view you want the
+        // returning charge request call to land on.
+        return new Uri("/MainPage.xaml", UriKind.Relative);
+    }
+}
+
+private void InitializePhoneApplication()
+{
+    […]
+
+    // Assign the URI-mapper class to the application frame.
+    RootFrame.UriMapper = new AssociationUriMapper();
+}
 ```
 
 PROTOCOL REQUEST
