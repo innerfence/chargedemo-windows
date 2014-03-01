@@ -32,15 +32,17 @@ INTEGRATION CHECKLIST
 * Make sure your application is registered to handle a URL scheme:
 
   * Using the XML (Text) Editor, open your app manifest file: `WMAppManifest.xml`
-  * Under `</Tokens>` and before `<ScreenResolutions>`, registere a unique protocol scheme
-    (e.g. `com-innerfence-chargedemo`):
+  * Under `</Tokens>` and before `<ScreenResolutions>`, register a unique protocol scheme
+    (e.g. `com-innerfence-chargedemo`)
+
 ```xml
 <Extensions>
   <Protocol Name="com-innerfence-chargedemo" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
 </Extensions>
 ```
-  * More details on MSDN: [Auto-launching apps using file and URI
-    associations](http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj206987.aspx)
+
+* More details on MSDN: [Auto-launching apps using file and URI
+  associations](http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj206987.aspx)
 
 * Request payment by creating an ChargeRequest object, setting its
   properties, calling its `GenerateLaunchURL()` method, and launching
