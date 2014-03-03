@@ -21,5 +21,6 @@ namespace InnerFence.ChargeDemo.Phone
             // In your app, this is where you define which view you want the
             // returning charge request call to land on.
             return new Uri("/MainPage.xaml", UriKind.Relative);
-        }    }
+        }
+    }
 }
