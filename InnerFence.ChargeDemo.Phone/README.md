@@ -11,7 +11,7 @@ card payment. When the user is done with Credit Card Terminal,
 ChargeDemo will be launched via its URL handler for
 `com-innerfence-chargedemo://`.
 
-Protocol details are provided in the [main README.md](../) in the case
+Protocol details are provided in the [main README.md](/) in the case
 that you cannot or do not wish to use our C# classes.
 
 Please visit our [Developer API
