@@ -133,8 +133,10 @@ namespace InnerFence.ChargeDemo.Phone
             RootFrame = new PhoneApplicationFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
+            // *** NOTICE! ***
             // Assign the URI-mapper class to the application frame.
-            RootFrame.UriMapper = new AssociationUriMapper();
+            // This is required if you want to handle incoming responses from Credit Card Terminal
+            RootFrame.UriMapper = new ProtocolUriMapper();
 
             // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;

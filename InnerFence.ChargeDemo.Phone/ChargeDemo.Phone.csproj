@@ -105,7 +105,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AssociationUriMapper.cs">
+    <Compile Include="ProtocolUriMapper.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChargeAPI\ChargeUriMapper.cs" />
