@@ -75,7 +75,7 @@ namespace InnerFence.ChargeDemo
             chargeRequest.Company = "Company Inc";
             chargeRequest.Country = "US";
             chargeRequest.Description = "Test transaction";
-            chargeRequest.Email = "johnexample.com";
+            chargeRequest.Email = "john@example.com";
             chargeRequest.FirstName = "John";
             chargeRequest.InvoiceNumber = "321";
             chargeRequest.LastName = "Doe";
