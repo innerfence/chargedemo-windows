@@ -20,11 +20,11 @@ namespace InnerFence.ChargeAPI
 
         public static object RetrieveLocalData(string key)
         {
-            if( ApplicationData.Current.LocalSettings.Values.ContainsKey(key) )
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(key))
             {
                 return ApplicationData.Current.LocalSettings.Values[key];
             }
-               
+
             return null;
         }
 
@@ -40,7 +40,7 @@ namespace InnerFence.ChargeAPI
             // Set the launch options in case user doesn't have Credit Card Terminal installed
             var launchOptions = new Windows.System.LauncherOptions();
             launchOptions.PreferredApplicationDisplayName = ChargeRequest.CCTERMINAL_DISPLAY_NAME;
-            launchOptions.PreferredApplicationPackageFamilyName = ChargeRequest.CCTERMINAL_PACKAGE_FAMILY_NAME;
+            launchOptions.PreferredApplicationPackageFamilyName = ChargeRequest.CCTERMINAL_WINDOWS_PFN;
             launchOptions.DesiredRemainingView = ViewSizePreference.UseNone;
 
             var success = await Launcher.LaunchUriAsync(launchURL, launchOptions);

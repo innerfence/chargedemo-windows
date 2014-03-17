@@ -7,7 +7,7 @@
     <ProjectGuid>{2CB1ED25-669F-400C-BEED-5D6D8E0075CE}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChargeDemo</RootNamespace>
+    <RootNamespace>InnerFence.ChargeDemo</RootNamespace>
     <AssemblyName>ChargeDemo</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
@@ -15,6 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>ChargeDemo_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>34CD99E6C18DEED6899DC9EC09E53EE30CD860EF</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -105,13 +106,21 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeException.cs">
+      <Link>ChargeAPI\ChargeException.cs</Link>
+    </Compile>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeRequest.cs">
+      <Link>ChargeAPI\ChargeRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeResponse.cs">
+      <Link>ChargeAPI\ChargeResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\InnerFence.ChargeAPI\ChargeUtils.cs">
+      <Link>ChargeAPI\ChargeUtils.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChargeAPI\ChargeException.cs" />
-    <Compile Include="ChargeAPI\ChargeRequest.cs" />
-    <Compile Include="ChargeAPI\ChargeResponse.cs" />
-    <Compile Include="ChargeAPI\ChargeUtils.cs" />
     <Compile Include="ChargeAPI\ChargeUtilsWindows.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

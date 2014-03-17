@@ -1,33 +1,28 @@
-﻿using InnerFence.ChargeAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using InnerFence.ChargeDemo.Phone.Resources;
+using InnerFence.ChargeAPI;
+using Microsoft.Xna.Framework.GamerServices;
 using Windows.System;
-using Windows.UI.Popups;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
-namespace InnerFence.ChargeDemo
+namespace InnerFence.ChargeDemo.Phone
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
+    public partial class MainPage : PhoneApplicationPage
     {
+        // Constructor
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            // Sample code to localize the ApplicationBar
+            //BuildLocalizedApplicationBar();
         }
 
         private void ChargeButton_Click(object sender, RoutedEventArgs e)
@@ -75,7 +70,7 @@ namespace InnerFence.ChargeDemo
             chargeRequest.Company = "Company Inc";
             chargeRequest.Country = "US";
             chargeRequest.Description = "Test transaction";
-            chargeRequest.Email = "johnexample.com";
+            chargeRequest.Email = "john@example.com";
             chargeRequest.FirstName = "John";
             chargeRequest.InvoiceNumber = "321";
             chargeRequest.LastName = "Doe";
@@ -102,34 +97,29 @@ namespace InnerFence.ChargeDemo
             // We suggest showing the user an error with a easy way
             // to download the app by showing a message dialog similar
             // to the one below.
-            var messageDialog = new MessageDialog(
+            IAsyncResult result = Guide.BeginShowMessageBox(
+                "App Not Installed",
                 "You'll need to install Credit Card Terminal before you can use this feature. " +
-                "Click Install below to begin the installation process.");
+                "Click Install below to begin the installation process.",
+                new string[] { "Install", "Close" },
+                0, // Set the command that will be invoked by default
+                Microsoft.Xna.Framework.GamerServices.MessageBoxIcon.Alert,
+                null,
+                null);
 
-            // Add commands and set their callbacks; both buttons use the same callback
-            messageDialog.Commands.Add(new UICommand(
-                "Install",
-                new UICommandInvokedHandler(this.CommandInvokedHandler)));
-            messageDialog.Commands.Add(new UICommand(
-                "Close",
-                new UICommandInvokedHandler(this.CommandInvokedHandler)));
+            // Make message box synchronous
+            result.AsyncWaitHandle.WaitOne();
 
-            // Set the command that will be invoked by default
-            messageDialog.DefaultCommandIndex = 0;
-
-            // Set the command to be invoked when escape is pressed
-            messageDialog.CancelCommandIndex = 1;
-
-            // Show the message dialog
-            await messageDialog.ShowAsync();
-        }
-
-        private async void CommandInvokedHandler(IUICommand command)
-        {
-            if (command.Label.Equals("Install"))
+            int? choice = Microsoft.Xna.Framework.GamerServices.Guide.EndShowMessageBox(result);
+            if (choice.HasValue)
             {
-                // Open the windows store link to Credit Card Terminal
-                await Launcher.LaunchUriAsync(new Uri(ChargeRequest.CCTERMINAL_WINDOWS_STORE_LINK));
+                if (choice.Value == 0)
+                {
+                    // User clicks on the Install button
+                    // Open the windows store link to Credit Card Terminal
+                    await Launcher.LaunchUriAsync(new Uri(ChargeRequest.CCTERMINAL_WP8_STORE_LINK));
+
+                }
             }
         }
     }
