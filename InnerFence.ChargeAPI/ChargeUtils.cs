@@ -49,7 +49,7 @@ namespace InnerFence.ChargeAPI
                     }
                     else
                     {
-                        throw new Exception(String.Format(CultureInfo.InvariantCulture, "Invalid param: {0}", param));
+                        throw new Exception(String.Format(CultureInfo.CurrentCulture, "Invalid param: {0}", param));
                     }
 
                     key = Uri.UnescapeDataString(key);

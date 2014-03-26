@@ -203,7 +203,7 @@ namespace InnerFence.ChargeAPI
         {
             if (null != value && !pattern.Match(value).Success)
             {
-                throw new ChargeException(String.Format(CultureInfo.InvariantCulture, "Invalid value provided for {0}", fieldName));
+                throw new ChargeException(String.Format(CultureInfo.CurrentCulture, "Invalid value provided for {0}", fieldName));
             }
         }
     }
