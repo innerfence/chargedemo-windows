@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ namespace InnerFence.ChargeAPI
                     }
                     else
                     {
-                        throw new Exception(String.Format("Invalid param: {0}", param));
+                        throw new Exception(String.Format(CultureInfo.InvariantCulture, "Invalid param: {0}", param));
                     }
 
                     key = Uri.UnescapeDataString(key);
@@ -91,18 +92,22 @@ namespace InnerFence.ChargeAPI
                 if (param.Value != null)
                 {
                     paramList.Add(
-                        String.Format("{0}={1}",
-                        Uri.EscapeDataString(param.Key),
-                        Uri.EscapeDataString(param.Value))
+                        String.Format(
+                            CultureInfo.InvariantCulture,
+                            "{0}={1}",
+                            Uri.EscapeDataString(param.Key),
+                            Uri.EscapeDataString(param.Value)
+                        )
                     );
                 }
             }
 
             // join param list with & and prefix it with ?
             string queryString = String.Join("&", paramList);
-            queryString = String.Format("?{0}", queryString);
+            queryString = String.Format(CultureInfo.InvariantCulture, "?{0}", queryString);
 
             string uriString = String.Format(
+                CultureInfo.InvariantCulture,
                 "{0}://{1}{2}{3}",
                 uri.Scheme,
                 uri.Host,

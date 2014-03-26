@@ -10,6 +10,7 @@ using InnerFence.ChargeDemo.Phone.Resources;
 using InnerFence.ChargeAPI;
 using Microsoft.Xna.Framework.GamerServices;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace InnerFence.ChargeDemo.Phone
 {
@@ -277,6 +278,7 @@ namespace InnerFence.ChargeDemo.Phone
                 }
 
                 string message = String.Format(
+                    CultureInfo.CurrentCulture,
                     "Charged!\n" +
                     "Record: {0}\n" +
                     "Transaction ID: {1}\n" +
@@ -302,6 +304,7 @@ namespace InnerFence.ChargeDemo.Phone
                 response.ExtraParams.TryGetValue("record_id", out recordId);
 
                 string message = String.Format(
+                    CultureInfo.CurrentCulture,
                     "Not Charged!\n" +
                     "Record: {0}",
                     recordId);
