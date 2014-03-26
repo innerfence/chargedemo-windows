@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,7 +58,7 @@ namespace InnerFence.ChargeAPI
         public String Amount { get; protected set; }
         public String CardType { get; protected set; }
         public String Currency { get; protected set; }
-        public virtual String ErrorMessage { get; protected set; }
+        public String ErrorMessage { get; protected set; }
         public Dictionary<string, string> ExtraParams { get; protected set; }
         public String RedactedCardNumber { get; protected set; }
         public Code ResponseCode { get; protected set; }
@@ -160,7 +161,7 @@ namespace InnerFence.ChargeAPI
             this.ExtraParams = new Dictionary<string, string>();
             foreach (var parameter in parameters)
             {
-                if (!parameter.Key.StartsWith("ifcc_"))
+                if (!parameter.Key.StartsWith("ifcc_", StringComparison.Ordinal))
                 {
                     this.ExtraParams[parameter.Key] = parameter.Value;
                 }
@@ -202,7 +203,7 @@ namespace InnerFence.ChargeAPI
         {
             if (null != value && !pattern.Match(value).Success)
             {
-                throw new ChargeException(String.Format("Invalid value provided for {0}", fieldName));
+                throw new ChargeException(String.Format(CultureInfo.CurrentCulture, "Invalid value provided for {0}", fieldName));
             }
         }
     }

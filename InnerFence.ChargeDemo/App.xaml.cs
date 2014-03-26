@@ -1,6 +1,7 @@
 ﻿using InnerFence.ChargeAPI;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -177,6 +178,7 @@ namespace InnerFence.ChargeDemo
                 }
 
                 string message = String.Format(
+                    CultureInfo.CurrentCulture,
                     "Charged!\n" +
                     "Record: {0}\n" +
                     "Transaction ID: {1}\n" +
@@ -202,6 +204,7 @@ namespace InnerFence.ChargeDemo
                 response.ExtraParams.TryGetValue("record_id", out recordId);
 
                 string message = String.Format(
+                    CultureInfo.CurrentCulture,
                     "Not Charged!\n" +
                     "Record: {0}",
                     recordId);
