@@ -106,13 +106,28 @@ namespace InnerFence.ChargeAPI
             string queryString = String.Join("&", paramList);
             queryString = String.Format(CultureInfo.InvariantCulture, "?{0}", queryString);
 
-            string uriString = String.Format(
-                CultureInfo.InvariantCulture,
-                "{0}://{1}{2}{3}",
-                uri.Scheme,
-                uri.Host,
-                uri.AbsolutePath,
-                queryString);
+            String uriString = null;
+            if (uri.IsDefaultPort)
+            {
+                uriString = String.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0}://{1}{2}{3}",
+                    uri.Scheme,
+                    uri.Host,
+                    uri.AbsolutePath,
+                    queryString);
+            }
+            else
+            {
+                uriString = String.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0}://{1}:{2}{3}{4}",
+                    uri.Scheme,
+                    uri.Host,
+                    uri.Port,
+                    uri.AbsolutePath,
+                    queryString);
+            }
 
             return new Uri(uriString);
         }
